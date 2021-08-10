@@ -7,7 +7,7 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@material-ui/icons";
 
 export type FilterValuesType = "all" | "active" | "completed"
-type TodoListType = {
+export type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -17,7 +17,7 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
@@ -60,6 +60,7 @@ const App = () => {
         tasks[todoListID] = tasks[todoListID].map(t => t.id === taskID ? {...t, title: title} : t) //в найденой по ИД таске делается копия таски с перезаписью title, а остальные t возвращаются
         setTasks({...tasks})
     }
+
     const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
         setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, filter: filter} : tl))  // та же суть, что и в предыдущей функциии
     }
