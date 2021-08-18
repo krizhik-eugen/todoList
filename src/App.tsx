@@ -50,7 +50,6 @@ const App = () => {
         const newTask: TaskType = {id: v1(), title: title, isDone: false}
         tasks[todoListID] = [newTask, ...tasks[todoListID]]
         setTasks({...tasks})
-
     }
     const changeTaskStatus = (taskID: string, isDone: boolean, todoListID: string) => {
         tasks[todoListID] = tasks[todoListID].map(t => t.id === taskID ? {...t, isDone: isDone} : t) //в найденой по ИД таске делается копия таски с перезаписью isDone, а остальные t возвращаются
