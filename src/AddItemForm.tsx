@@ -1,50 +1,49 @@
-import React, {KeyboardEvent, ChangeEvent, useState} from 'react'
-import {IconButton, TextField} from "@material-ui/core";
-import { AddBox } from '@material-ui/icons';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Box, Button, FormControl, IconButton, TextField} from '@material-ui/core';
+import {AddBox} from '@material-ui/icons';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm = (props: AddItemFormPropsType) => {
-    const [title, setTitle] = useState<string>("")
-    const [error, setError] = useState<boolean>(false)
-    const onTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-        setError(false)
-    }
-    const onKeyHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") addItem()
-    }
-    const addItem = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            props.addItem(trimmedTitle)
-        } else {
-            setError(true)
-        }
-        setTitle("")
-    }
-    // const errorMessage = error ? <div className={"error-text"}>Title is required!</div> : null
+export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
+    console.log("AddItemForm is called")
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
 
-    return (
-        <div /*style={{border: '1px solid black', padding: '5px', borderColor: 'blue', borderRadius: '3px'}}*/>
-            <TextField
-                value={title}
-                onChange={onTitleChangeHandler}
-                onKeyPress={onKeyHandler}
-                variant={"outlined"}
-                size={"small"}
-                label={'Title'}
-                error={error}
-                helperText={error && 'Title is required!'}
-                /*className={error ? "error" : ""}*/
-            />
-            <IconButton
-                size={"small"}
-                color={"primary"}
-                onClick={addItem}><AddBox/></IconButton>
-            {/*{errorMessage}*/}
-        </div>
-    )
-}
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
+    }
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
+            setError(null);
+        }
+        if (e.charCode === 13) {
+            addItem();
+        }
+    }
+
+    return <div>
+        <TextField variant="outlined"
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox />
+        </IconButton>
+    </div>
+} );
