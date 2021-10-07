@@ -1,11 +1,9 @@
-import React, { ChangeEvent, useCallback } from 'react'
-import { EditableSpan } from '../../../../components/EditableSpan/EditableSpan'
-import { TaskStatuses, TaskType } from '../../../../api/todolists-api'
-
+import React, {ChangeEvent, useCallback} from 'react'
+import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan'
 import { Delete } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
-import {RequestStatusType} from "../../../../app/app-reducer";
+import {TaskStatuses, TaskType} from '../../../../api/todolists-api'
 
 type TaskPropsType = {
     task: TaskType
@@ -33,8 +31,8 @@ export const Task = React.memo((props: TaskPropsType) => {
             onChange={onChangeHandler}
         />
 
-        <EditableSpan value={props.task.title} onChange={onTitleChangeHandler} disabled={props.task.entityStatus === 'loading'}/>
-        <IconButton onClick={onClickHandler} disabled={props.task.entityStatus === "loading"}>
+        <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
+        <IconButton onClick={onClickHandler}>
             <Delete/>
         </IconButton>
     </div>
