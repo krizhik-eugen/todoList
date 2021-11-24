@@ -2,15 +2,14 @@ import React, {useCallback, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from '../../app/store'
 import {
-    addTodolistTC,
-    changeTodolistFilterAC,
+    addTodolistTC, changeTodolistFilterAC,
     changeTodolistTitleTC,
     fetchTodolistsTC,
     FilterValuesType,
     removeTodolistTC,
     TodolistDomainType
 } from './todolists-reducer'
-import {addTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from './tasks-reducer'
+import {addTaskTC, removeTaskTC, updateTaskTC} from './tasks-reducer'
 import {TaskStatuses} from '../../api/todolists-api'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -24,8 +23,8 @@ type PropsType = {
 
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const todolists = useSelector((state: AppRootStateType) => state.todolists)
+    const tasks = useSelector((state:AppRootStateType) => state.tasks)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -57,7 +56,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, [])
 
     const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId, value)
+        const action = changeTodolistFilterAC({id: todolistId, filter: value})
         dispatch(action)
     }, [])
 
@@ -77,7 +76,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, [dispatch])
 
     if (!isLoggedIn) {
-        debugger
         return <Redirect to={'/login'}/>
     }
     return <>
@@ -86,7 +84,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         </Grid>
         <Grid container spacing={3}>
             {
-                todolists.map(tl => {
+                todolists.map( (tl:any) => {
                     let allTodolistTasks = tasks[tl.id]
 
                     return <Grid item key={tl.id}>

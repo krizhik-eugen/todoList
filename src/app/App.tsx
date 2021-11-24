@@ -25,18 +25,17 @@ type PropsType = {
 function App({demo = false}: PropsType) {
     const dispatch = useDispatch()
     useEffect(() => {
-        debugger
         dispatch(initializeAppTC())
     }, [])
 
-    const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+    const status = useSelector((state: AppRootStateType) => state.app.status)
     const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state=>state.auth.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const onLogoutHandler = () => {
         dispatch(logoutTC())
     }
 
-    if(!isInitialized) {
+    if (!isInitialized) {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
             <CircularProgress/>
