@@ -8,18 +8,16 @@ import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reduc
 
 const initialState: TasksStateType = {}
 
-export const fetchTasksTC = createAsyncThunk('tasks/fetchTasks', (todolistId: string, thunkAPI) => {
+export const fetchTasksTC = createAsyncThunk('tasks/fetchTasks', async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-    return todolistsAPI.getTasks(todolistId)
-        .then((res) => {
-            const tasks = res.data.items
-            thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
-            return {tasks, todolistId};
-        })
+    const response = await todolistsAPI.getTasks(todolistId);
+    const tasks = response.data.items
+    thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+    return {tasks, todolistId};
 })
-export const removeTaskTC = createAsyncThunk('tasks/removeTask', (param: { taskId: string, todolistId: string }, thunkAPI) => {
-    return todolistsAPI.deleteTask(param.todolistId, param.taskId)
-        .then(res => ({taskId: param.taskId, todolistId: param.todolistId}))
+export const removeTaskTC = createAsyncThunk('tasks/removeTask', async (param: { taskId: string, todolistId: string }, thunkAPI) => {
+    const response = await todolistsAPI.deleteTask(param.todolistId, param.taskId)
+    return {taskId: param.taskId, todolistId: param.todolistId}
 })
 
 
